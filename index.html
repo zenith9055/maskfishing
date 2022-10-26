@@ -17,26 +17,6 @@
 </head>
 
 <body>
-    <!--
-    <nav class="navbar navbar-expand-lg nav-distance">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">MBTI 관상</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    <a class="nav-link" href="#">Features</a>
-                    <a class="nav-link" href="#">Pricing</a>
-                    <a class="nav-link disabled">Disabled</a>
-                </div>
-            </div>
-        </div>
-    </nav>
-    -->
-
     <section class="section">
         <h1 class="title">MBTI 관상 테스트</h1>
         <h2 class="subtitle">나는 관상은 어떤 MBTI일까?</h2>
@@ -61,10 +41,7 @@
         </div>
         <!-- 젠더 토글 스위치 끝-->
     </section>
-    <script>
-        genderChk = document.getElementById("gender");
-        console.log(genderChk.checked);
-    </script>
+
 
     <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <div class="container file-upload" id="bg-box">
@@ -86,13 +63,17 @@
 
                 <button type="button" onclick="window.location.reload()" class="remove-image">다른 사진으로
                     재시도</span></button>
-                <!--
-                <button type="button" onclick="removeUpload()" class="remove-image">Remove <span
-                        class="image-title">Uploaded Image</span></button>
-                        -->
             </div>
+
         </div>
     </div>
+    <div>
+        <h3>★ 사진은 절대 어디에도 보관 및 활용되지 않습니다. </h3>
+        <h6>★ MBTI 해석 참조 : https://www.16personalities.com/ko </h6>
+        <h6>★ E-Mail : csd100gom@gmail.com </h6>
+        <h6>© CSD100Gom 2022. All Rights Reserved.</h6>
+    </div>
+
     <div id="webcam-container"></div>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
         integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
@@ -104,7 +85,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
     <script>
         function readURL(input) {
-            $('.result-message').html("<div class=\"spinner\"></div>");
+            $('.result-message').html("<div class=\"spinner\"></div><h2>AI가 열심히 비교분석 중입니다.<h2>");
 
             if (input.files && input.files[0]) {
 
@@ -373,78 +354,6 @@
             type = mbtiArr[mbtiNum][mbtiInfo.type];
             info = mbtiArr[mbtiNum][mbtiInfo.desc];
 
-            {   // 기존 Switch 구성
-                /*switch (prediction[0].className) {
-                    case "ESTJ":
-                        resultMessage = "<h1>경 영 자</h1>사물과 사람을 관리하는 데 뛰어난 능력을 지닌 경영자입니다.";
-                        bgColor = "rgba(88,121,75,0.05)";
-                        break;
-                    case "ESTP":
-                        console.log(mbtiTypes.ESTP);
-                        resultMessage = "<h1>사 업 가</h1>위험을 기꺼이 감수하는 성격으로, 영리하고 에너지 넘치며 관찰력이 뛰어난 사업가입니다.";
-                        bgColor = "rgba(255,151,123,0.05)";
-                        break;
-                    case "ESFJ":
-                        resultMessage = "<h1>집 정 관</h1>배려심이 넘치고 항상 다른 사람을 도울 준비가 되어 있는 성격으로, 인기가 많고 사교성 높은 마당발입니다.";
-                        bgColor = "rgba(255,207,207,0.05)";
-                        break;
-                    case "ESFP":
-                        resultMessage = "<h1>연 예 인</h1>즉흥적이고 넘치는 에너지와 열정으로 주변 사람을 즐겁게 하는 연예인입니다.";
-                        bgColor = "rgba(244,112,126,0.05)";
-                        break;
-                    case "ENTJ":
-                        resultMessage = "<h1>통 솔 자</h1>항상 문제 해결 방법을 찾아내는 성격으로, 대담하고 상상력이 풍부하며 의지가 강력한 지도자입니다.";
-                        bgColor = "rgba(52,98,163,0.05)";
-                        break;
-                    case "ENTP":
-                        resultMessage = "<h1>변 론 가</h1>지적 도전을 즐기는 여리하고 호기심이 많은 사색가입니다.";
-                        bgColor = "rgba(221,88,67,0.05)";
-                        break;
-                    case "ENFJ":
-                        resultMessage = "<h1>선 도 자</h1>청중을 사로잡고 의욕을 불어넣는 카리스마 넘치는 지도자입니다.";
-                        bgColor = "rgba(2,206,176,0.05)";
-                        break;
-                    case "ENFP":
-                        resultMessage = "<h1>활 동 가</h1>열정적이고 창의적인 성격으로, 긍정적으로 삶을 바라보는 사교적이면서도 자유로운 영혼입니다.";
-                        bgColor = "rgba(255,163,72,0.05)";
-                        break;
-                    case "ISTJ":
-                        resultMessage = "<h1>현실주의자</h1>사실을 중시하는 믿음직한 현실주의자입니다.";
-                        bgColor = "rgba(211,211,211,0.05)";
-                        break;
-                    case "ISTP":
-                        resultMessage = "<h1>장   인</h1>대담하면서도 현실적인 성격으로, 모든 종류의 도구를 자유자재로 다루는 장인입니다.";
-                        bgColor = "rgba(70,144,100,0.05)";
-                        break;
-                    case "ISFJ":
-                        resultMessage = "<h1>수 호 자</h1>주변 사람을 보호할 준비가 되어 있는 헌신적이고 따뜻한 수호자입니다.";
-                        bgColor = "rgba(255,204,113,0.05)";
-                        break;
-                    case "ISFP":
-                        resultMessage = "<h1>모 험 가</h1>항상 새로운 경험을 추구하는 유연하고 매력 넘치는 예술가입니다.";
-                        bgColor = "rgba(166,191,111,0.05)";
-                        break;
-                    case "INTJ":
-                        resultMessage = "<h1>전 략 가</h1>모든 일에 대해 계획을 세우며 상상력이 풍부한 전략가입니다.";
-                        bgColor = "rgba(186,176,255,0.05)";
-                        break;
-                    case "INTP":
-                        resultMessage = "<h1>논리술사</h1>지식을 끝없이 갈망하는 혁신적인 발명가입니다.";
-                        bgColor = "rgba(127,194,244,0.05)";
-                        break;
-                    case "INFJ":
-                        resultMessage = "<h1>옹 호 자</h1>차분하고 신비한 분위기를  풍기는 성격으로, 다른 사람에게 의욕을 불어넣는 이상주의자입니다.";
-                        bgColor = "rgba(192,216,255,0.05)";
-                        break;
-                    case "INFP":
-                        resultMessage = "<h1>중 재 자</h1>항상 선을 행할 준비가 되어 있는 부드럽고 친절한 이타주의자입니다.";
-                        bgColor = "rgba(39,122,100,0.05)";
-                        break;
-                    default:
-                        resultMessage = "알수없음"
-                }*/
-            }
-
             resultMessage = `<h1 style=color:rgb(${rgb})>${type}</h1><h2>${info}</h2>`;
             $('.result-message').html(resultMessage);
 
@@ -521,10 +430,19 @@
     </script>
 </body>
 
-<!--  Copyright (c) 2022 by Aaron Vanston (https://codepen.io/aaronvanston/pen/yNYOXR)
+<!--  # Image Upload
+Copyright (c) 2022 by Aaron Vanston (https://codepen.io/aaronvanston/pen/yNYOXR)
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
+, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+
+<!--  # Gender Toggle
+Copyright (c) 2022 by Mert Cukuren (https://codepen.io/knyttneve/pen/bPpEZY)
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
 
 </html>

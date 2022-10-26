@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Jua&display=swap");
 
 html {
-  font-size: 16px;
+  font-size: 14px;
   font-family: "Jua", sans-serif;
   word-break: keep-all;
 }
@@ -19,12 +19,14 @@ h2 {
   margin: auto;
   max-width: 80%;
   text-align: center;
+  color: #031230;
 }
 
 .file-upload {
   /*background-color: #ffffff;
   width: 600px;*/
-  padding: 13% 0;
+
+  padding: 2% 0;
   border-radius: 10px;
   /*border: solid 1.5px #f6f7fa;*/
   background-color: #f6f7fa;
@@ -118,9 +120,10 @@ h2 {
 }
 
 .remove-image {
-  width: 200px;
+  width: 220px;
   margin: 0;
   margin-top: 10px;
+  font-size: 1.5rem;
   color: #fff;
   background: /*#cd4535;*/ rgb(70, 144, 100);
   border: none;
@@ -281,16 +284,14 @@ h2 {
 
   .remove-image {
     font-size: 1.5rem;
+    width: 200px;
   }
 }
 
 /* 젠더 토글 스위치 */
+
 * {
   box-sizing: border-box;
-}
-
-input {
-  display: none;
 }
 
 label {
@@ -367,4 +368,22 @@ input:checked + label > .knob > i:before {
   width: 12px;
   left: 0px;
   transform: rotate(134deg);
+}
+
+#gender {
+  display: none;
+}
+
+h3,
+h6 {
+  margin-top: 10px;
+  text-align: center;
+}
+
+h3 {
+  color: red;
+}
+
+h6 {
+  color: gray;
 }
