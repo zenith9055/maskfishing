@@ -13,7 +13,7 @@
 
     <!-- Go to www.addthis.com/dashboard to customize your tools -->
     <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-63589f48ebc138e8"></script>
-
+    <link rel="icon" href="/favicon.png">
 </head>
 
 <body>
@@ -38,14 +38,33 @@
     -->
 
     <section class="section">
-        <h1 class="title">MBTI 관상</h1>
-        <h2 class="subtitle">내가 ENTJ가 될 상인가</h2>
+        <h1 class="title">MBTI 관상 테스트</h1>
+        <h2 class="subtitle">나는 관상은 어떤 MBTI일까?</h2>
     </section>
 
     <section class="youtube">
-        <div class="container mt-5 youtube-cover d-flex flex-row-reverse"><a href="" class="youtube-link">By
-                CSD100Gom</a><img src="" alt="" class="youtube-icon"></div>
+        <div class="container mt-5 youtube-cover d-flex flex-row-reverse"><img src="favicon.png" alt=""
+                class="youtube-icon">By
+            CSD100Gom</div>
+        <h2 class="subtitle">성별을 선택해주세요.</h2>
+
+        <!-- 젠더 토글 스위치-->
+        <div class="gender-container">
+            <span class="gender-sort">
+                <div class="gender" style="color:#f470a7">여자</div>
+                <input type="checkbox" id="gender" checked>
+                <label for="gender" id="gender-label">
+                    <span class="knob"><i></i></span>
+                </label>
+                <div class="gender" style="color:#a1c6dd">남자</div>
+            </span>
+        </div>
+        <!-- 젠더 토글 스위치 끝-->
     </section>
+    <script>
+        genderChk = document.getElementById("gender");
+        console.log(genderChk.checked);
+    </script>
 
     <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <div class="container file-upload" id="bg-box">
@@ -158,80 +177,275 @@
 
         // run the webcam image through the image model
         async function predict() {
+            // MBTI DATA
+            const mbtiTypes = { // MBTI Type
+                ESTJ: 0,
+                ESTP: 1,
+                ESFJ: 2,
+                ESFP: 3,
+                ENTJ: 4,
+                ENTP: 5,
+                ENFJ: 6,
+                ENFP: 7,
+                ISTJ: 8,
+                ISTP: 9,
+                ISFJ: 10,
+                ISFP: 11,
+                INTJ: 12,
+                INTP: 13,
+                INFJ: 14,
+                INFP: 15,
+            };
+
+            const mbtiInfo = { // MBTI Info : name, type, desc, rgb
+                name: 0,
+                type: 1,
+                desc: 2,
+                rgb: 3,
+            };
+
+            const mbtiArr = [
+                [
+                    "ESTJ",
+                    "경영자",
+                    "경영자(ESTJ)는 전통과 질서를 중시하는 성격으로, 자신이 생각하는 옳고 그름과 사회적 기준에 따라 가족과 공동체가 화합할 수 있도록 노력합니다. 이들은 정직과 헌신과 존엄성을 중시하며, 어려운 길을 기꺼이 앞장서고 다른 사람들에게 명확한 조언과 지도를 제공합니다.",
+                    "88,121,75",
+                ],
+                [
+                    "ESTP",
+                    "사업가",
+                    "사업가(ESTP)는 항상 주변 사람에게 영향력을 행사하곤 합니다. 파티에서 가는 곳마다 사람들에게 둘러싸여 있는 사람을 발견한다면 아마 사업가일 것입니다. 이들은 직설적인 유머 감각을 지니고 있으며 수많은 사람의 관심을 받는 일을 즐깁니다.",
+                    "255,151,123",
+                ],
+                [
+                    "ESFJ",
+                    "집정관",
+                    "집정관(ESFJ)에게 인생이란 남과 함께 나눌 때 가장 즐거운 것입니다. 이들은 여러 사람을 하나로 모으는 역할을 하며 솔직하고 개방적인 태도로 친구와 연인과 이웃을 대합니다. 집정관이라고 모든 사람을 좋아하고 무한한 관용을 베푸는 것은 아닙니다.",
+                    "255,207,207",
+                ],
+                [
+                    "ESFP",
+                    "연예인",
+                    "연예인(ESFP)은 즉흥적으로 노래하고 춤을 추는 일을 즐기는 성격입니다. 이들은 지금 이 순간을 즐기며 남들도 자신과 같은 즐거움을 느낄 수 있기를 바랍니다. 또한 남을 응원하는 데 기꺼이 시간과 에너지를 투자하며, 매우 매력적인 방식으로 다른 사람의 기운을 북돋곤 합니다.",
+                    "244,112,126",
+                ],
+                [
+                    "ENTJ",
+                    "통솔자",
+                    "통솔자(ENTJ)는 타고난 지도자라고 할 수 있습니다. 이들은 카리스마와 자신감을 지니고 있으며 자신의 권한을 이용해 사람들이 공통된 목표를 위해 함께 노력하도록 이끕니다. 또한 이들은 냉철한 이성을 지닌 것으로 유명하며, 자신이 원하는 것을 성취하기 위해 열정과 결단력과 날카로운 지적 능력을 활용합니다.",
+                    "52,98,163",
+                ],
+                [
+                    "ENTP",
+                    "변론가",
+                    "변론가(ENTP)는 두뇌 회전이 빠르고 대담한 성격으로 현재 상황에 이의를 제기하는 데 거리낌이 없습니다. 변론가는 어떤 의견이나 사람에 반대하는 일을 두려워하지 않으며, 논란이 될 만한 주제에 대해 격렬하게 논쟁하는 일을 즐깁니다.",
+                    "221,88,67",
+                ],
+                [
+                    "ENFJ",
+                    "선도자",
+                    "선도자(ENFJ)는 삶에서 위대한 사명을 위해 힘써야 한다는 느낌을 받곤 합니다. 사려 깊고 이상주의적 성향을 지닌 선도자는 다른 사람과 주변 세상에 긍정적인 영향력을 발휘하기 위해 최선을 다하며, 어려운 상황에서도 올바른 일을 할 기회를 마다하지 않습니다.",
+                    "2,206,176",
+                ],
+                [
+                    "ENFP",
+                    "활동가",
+                    "활동가(ENFP)는 진정으로 자유로운 영혼이라고 할 수 있으며 외향적이고 솔직하며 개방적인 성격입니다. 이들은 활기차고 낙관적인 태도로 삶을 대하며 다른 사람들 사이에서 돋보이곤 합니다. 그러나 신나는 삶을 사는 것처럼 보인다고 해서 즐거움만을 좇는 성격은 아니며, 다른 사람과 감정적으로 깊고 의미 있는 관계를 맺는 일을 추구합니다.",
+                    "255,163,72",
+                ],
+                [
+                    "ISTJ",
+                    "현실주의자",
+                    "현실주의자(ISTJ)는 진실하게 행동하는 자신의 모습에서 자부심을 느끼며, 자기 생각을 솔직하게 이야기하고 어떤 것에 헌신하기로 한 경우 최선을 다합니다. 현실주의자는 인구의 상당 부분을 차지합니다. 화려한 삶이나 다른 사람의 주의를 끄는 일에는 관심이 없으며, 안정된 사회를 위해 자신의 몫보다 많은 기여를 하곤 합니다.",
+                    "211,211,211",
+                ],
+                [
+                    "ISTP",
+                    "장인",
+                    "장인(ISTP)은 이성과 호기심을 통해 세상을 바라보며 눈과 손으로 직접 탐구하는 일을 즐깁니다. 이들은 타고난 손기술을 지니고 있으며, 다양한 프로젝트에서 유용하고 재미있는 물건을 만들어 내고 주변 환경에서 배울 점을 찾습니다. 장인은 보통 기술자나 엔지니어로 일하는 경우가 많으며 물건을 직접 분해하고 조립해 개선하는 일을 즐깁니다.",
+                    "70,144,100",
+                ],
+                [
+                    "ISFJ",
+                    "수호자",
+                    "수호자(ISFJ)는 겸손한 자세로 세상을 지탱하는 역할을 합니다. 이들은 근면하고 헌신적인 성격으로 주변 사람들에 대한 깊은 책임감을 느낍니다. 이들은 마감 기한을 철저히 지키고 동료와 친구의 생일과 기념일을 챙기며, 기존 질서를 유지하고 주변 사람을 배려하는 동시에 기꺼이 도움의 손길을 건넵니다.",
+                    "255,204,113",
+                ],
+                [
+                    "ISFP",
+                    "모험가",
+                    "모험가(ISFP)는 진정한 의미의 예술가라고 할 수 있습니다. 하지만 모험가라고 반드시 예술 업계에만 종사하는 것은 아닙니다. 이들에게는 삶 자체가 자신을 표현하기 위한 캔버스이기 때문입니다. 이들은 입는 옷부터 여가 시간을 보내는 방식까지 다양한 측면에서 자신의 독특한 개성을 생생히 드러냅니다.",
+                    "166,191,111",
+                ],
+                [
+                    "INTJ",
+                    "전략가",
+                    "최고가 되는 것은 외로운 일입니다. 매우 희귀한 성격이면서도 뛰어난 능력을 지닌 전략가(INTJ)는 이러한 말의 의미를 잘 알고 있습니다. 전략가는 이성적이면서도 두뇌 회전이 빠른 성격으로, 자신의 뛰어난 사고 능력을 자랑스러워하며 거짓말과 위선을 꿰뚫어 보는 능력이 있습니다.",
+                    "186,176,255",
+                ],
+                [
+                    "INTP",
+                    "논리술사",
+                    "논리술사(INTP)는 자신의 독특한 관점과 활기 넘치는 지성에 자부심을 느끼며, 우주의 미스터리에 대해 깊이 생각하곤 합니다. 유명한 철학자와 과학자 중 논리술사 성격이 많은 것도 이 때문일 것입니다. 논리술사는 상당히 희귀한 성격이지만 뛰어난 창의성과 독창성으로 많은 사람 사이에서 존재감을 드러내곤 합니다.",
+                    "127,194,244",
+                ],
+                [
+                    "INFJ",
+                    "옹호자",
+                    "옹호자(INFJ)는 매우 희귀한 성격임에도 불구하고 세상에 큰 영향력을 발휘하곤 합니다. 이들은 이상주의적이고 원칙주의적인 성격으로, 삶에 순응하는 대신 삶에 맞서 변화를 만들어 내고자 합니다. 이들에게 성공이란 돈이나 지위가 아니라 자아를 실현하고 다른 사람을 도우며 세상에서 선을 실천하는 일입니다.",
+                    "192,216,255",
+                ],
+                [
+                    "INFP",
+                    "중재자",
+                    "중재자(INFP)는 언뜻 보기에 조용하고 자신을 내세우지 않는 것처럼 보이지만, 사실은 에너지와 열정이 넘치는 마음을 지닌 성격입니다. 이들은 창의적이고 상상력이 뛰어나며 몽상을 즐기는 성격으로, 머릿속에서 수많은 이야기를 만들어 내곤 합니다. 또한 음악과 예술과 자연에 대한 감수성이 뛰어나며 다른 사람의 감정을 빠르게 알아차리곤 합니다.",
+                    "39,122,100",
+                ],
+            ];
+            // MBTI DATA END
+
             // predict can take in an image, video or canvas html element
             var image = document.getElementById("face-image")
             const prediction = await model.predict(image, false);
             prediction.sort((a, b) => parseFloat(b.probability) - parseFloat(a.probability));
 
             var resultMessage;
+            var mbtiNum;
+            var rgb;
+            var type;
+            var info;
+            var bgColor;
+
             switch (prediction[0].className) {
                 case "ESTJ":
-                    resultMessage = "경영자 / 사물과 사람을 관리하는 데 뛰어난 능력을 지닌 경영자입니다.";
-                    bgColor = "rgba(88,121,75,0.05)";
+                    mbtiNum = mbtiTypes.ESTJ;
                     break;
                 case "ESTP":
-                    resultMessage = "사업가 / 위험을 기꺼이 감수하는 성격으로, 영리하고 에너지 넘치며 관찰력이 뛰어난 사업가입니다.";
-                    bgColor = "rgba(255,151,123,0.05)";
+                    mbtiNum = mbtiTypes.ESTP;
                     break;
                 case "ESFJ":
-                    resultMessage = "집정관 / 배려심이 넘치고 항상 다른 사람을 도울 준비가 되어 있는 성격으로, 인기가 많고 사교성 높은 마당발입니다.";
-                    bgColor = "rgba(255,207,207,0.05)";
+                    mbtiNum = mbtiTypes.ESFJ;
                     break;
                 case "ESFP":
-                    resultMessage = "연예인 / 즉흥적이고 넘치는 에너지와 열정으로 주변 사람을 즐겁게 하는 연예인입니다.";
-                    bgColor = "rgba(244,112,126,0.05)";
+                    mbtiNum = mbtiTypes.ESFP;
                     break;
                 case "ENTJ":
-                    resultMessage = "통솔자 / 항상 문제 해결 방법을 찾아내는 성격으로, 대담하고 상상력이 풍부하며 의지가 강력한 지도자입니다.";
-                    bgColor = "rgba(52,98,163,0.05)";
+                    mbtiNum = mbtiTypes.ENTJ;
                     break;
                 case "ENTP":
-                    resultMessage = "변론가 / 지적 도전을 즐기는 여리하고 호기심이 많은 사색가입니다.";
-                    bgColor = "rgba(221,88,67,0.05)";
+                    mbtiNum = mbtiTypes.ENTP;
                     break;
                 case "ENFJ":
-                    resultMessage = "선도자 / 청중을 사로잡고 의욕을 불어넣는 카리스마 넘치는 지도자입니다.";
-                    bgColor = "rgba(2,206,176,0.05)";
+                    mbtiNum = mbtiTypes.ENFJ;
                     break;
                 case "ENFP":
-                    resultMessage = "활동가 / 열정적이고 창의적인 성격으로, 긍정적으로 삶을 바라보는 사교적이면서도 자유로운 영혼입니다.";
-                    bgColor = "rgba(255,163,72,0.05)";
+                    mbtiNum = mbtiTypes.ENFP;
                     break;
                 case "ISTJ":
-                    resultMessage = "현실주의자 / 사실을 중시하는 믿음직한 현실주의자입니다.";
-                    bgColor = "rgba(211,211,211,0.05)";
+                    mbtiNum = mbtiTypes.ISTJ;
                     break;
                 case "ISTP":
-                    resultMessage = "장인 / 대담하면서도 현실적인 성격으로, 모든 종류의 도구를 자유자재로 다루는 장인입니다.";
-                    bgColor = "rgba(70,144,100,0.05)";
+                    mbtiNum = mbtiTypes.ISTP;
                     break;
                 case "ISFJ":
-                    resultMessage = "수호자 / 주변 사람을 보호할 준비가 되어 있는 헌신적이고 따뜻한 수호자입니다.";
-                    bgColor = "rgba(255,204,113,0.05)";
+                    mbtiNum = mbtiTypes.ISFJ;
                     break;
                 case "ISFP":
-                    resultMessage = "모험가 / 항상 새로운 경험을 추구하는 유연하고 매력 넘치는 예술가입니다.";
-                    bgColor = "rgba(166,191,111,0.05)";
+                    mbtiNum = mbtiTypes.ISFP;
                     break;
                 case "INTJ":
-                    resultMessage = "전략가 / 모든 일에 대해 계획을 세우며 상상력이 풍부한 전략가입니다.";
-                    bgColor = "rgba(186,176,255,0.05)";
+                    mbtiNum = mbtiTypes.INTJ;
                     break;
                 case "INTP":
-                    resultMessage = "논리술사 / 지식을 끝없이 갈망하는 혁신적인 발명가입니다.";
-                    bgColor = "rgba(127,194,244,0.05)";
+                    mbtiNum = mbtiTypes.INTP;
                     break;
                 case "INFJ":
-                    resultMessage = "옹호자 / 차분하고 신비한 분위기를  풍기는 성격으로, 다른 사람에게 의욕을 불어넣는 이상주의자입니다.";
-                    bgColor = "rgba(192,216,255,0.05)";
+                    mbtiNum = mbtiTypes.INFJ;
                     break;
                 case "INFP":
-                    resultMessage = "중재자 / 항상 선을 행할 준비가 되어 있는 부드럽고 친절한 이타주의자입니다.";
-                    bgColor = "rgba(39,122,100,0.05)";
+                    mbtiNum = mbtiTypes.INFP;
                     break;
                 default:
                     resultMessage = "알수없음"
             }
+
+            rgb = mbtiArr[mbtiNum][mbtiInfo.rgb];
+            type = mbtiArr[mbtiNum][mbtiInfo.type];
+            info = mbtiArr[mbtiNum][mbtiInfo.desc];
+
+            {   // 기존 Switch 구성
+                /*switch (prediction[0].className) {
+                    case "ESTJ":
+                        resultMessage = "<h1>경 영 자</h1>사물과 사람을 관리하는 데 뛰어난 능력을 지닌 경영자입니다.";
+                        bgColor = "rgba(88,121,75,0.05)";
+                        break;
+                    case "ESTP":
+                        console.log(mbtiTypes.ESTP);
+                        resultMessage = "<h1>사 업 가</h1>위험을 기꺼이 감수하는 성격으로, 영리하고 에너지 넘치며 관찰력이 뛰어난 사업가입니다.";
+                        bgColor = "rgba(255,151,123,0.05)";
+                        break;
+                    case "ESFJ":
+                        resultMessage = "<h1>집 정 관</h1>배려심이 넘치고 항상 다른 사람을 도울 준비가 되어 있는 성격으로, 인기가 많고 사교성 높은 마당발입니다.";
+                        bgColor = "rgba(255,207,207,0.05)";
+                        break;
+                    case "ESFP":
+                        resultMessage = "<h1>연 예 인</h1>즉흥적이고 넘치는 에너지와 열정으로 주변 사람을 즐겁게 하는 연예인입니다.";
+                        bgColor = "rgba(244,112,126,0.05)";
+                        break;
+                    case "ENTJ":
+                        resultMessage = "<h1>통 솔 자</h1>항상 문제 해결 방법을 찾아내는 성격으로, 대담하고 상상력이 풍부하며 의지가 강력한 지도자입니다.";
+                        bgColor = "rgba(52,98,163,0.05)";
+                        break;
+                    case "ENTP":
+                        resultMessage = "<h1>변 론 가</h1>지적 도전을 즐기는 여리하고 호기심이 많은 사색가입니다.";
+                        bgColor = "rgba(221,88,67,0.05)";
+                        break;
+                    case "ENFJ":
+                        resultMessage = "<h1>선 도 자</h1>청중을 사로잡고 의욕을 불어넣는 카리스마 넘치는 지도자입니다.";
+                        bgColor = "rgba(2,206,176,0.05)";
+                        break;
+                    case "ENFP":
+                        resultMessage = "<h1>활 동 가</h1>열정적이고 창의적인 성격으로, 긍정적으로 삶을 바라보는 사교적이면서도 자유로운 영혼입니다.";
+                        bgColor = "rgba(255,163,72,0.05)";
+                        break;
+                    case "ISTJ":
+                        resultMessage = "<h1>현실주의자</h1>사실을 중시하는 믿음직한 현실주의자입니다.";
+                        bgColor = "rgba(211,211,211,0.05)";
+                        break;
+                    case "ISTP":
+                        resultMessage = "<h1>장   인</h1>대담하면서도 현실적인 성격으로, 모든 종류의 도구를 자유자재로 다루는 장인입니다.";
+                        bgColor = "rgba(70,144,100,0.05)";
+                        break;
+                    case "ISFJ":
+                        resultMessage = "<h1>수 호 자</h1>주변 사람을 보호할 준비가 되어 있는 헌신적이고 따뜻한 수호자입니다.";
+                        bgColor = "rgba(255,204,113,0.05)";
+                        break;
+                    case "ISFP":
+                        resultMessage = "<h1>모 험 가</h1>항상 새로운 경험을 추구하는 유연하고 매력 넘치는 예술가입니다.";
+                        bgColor = "rgba(166,191,111,0.05)";
+                        break;
+                    case "INTJ":
+                        resultMessage = "<h1>전 략 가</h1>모든 일에 대해 계획을 세우며 상상력이 풍부한 전략가입니다.";
+                        bgColor = "rgba(186,176,255,0.05)";
+                        break;
+                    case "INTP":
+                        resultMessage = "<h1>논리술사</h1>지식을 끝없이 갈망하는 혁신적인 발명가입니다.";
+                        bgColor = "rgba(127,194,244,0.05)";
+                        break;
+                    case "INFJ":
+                        resultMessage = "<h1>옹 호 자</h1>차분하고 신비한 분위기를  풍기는 성격으로, 다른 사람에게 의욕을 불어넣는 이상주의자입니다.";
+                        bgColor = "rgba(192,216,255,0.05)";
+                        break;
+                    case "INFP":
+                        resultMessage = "<h1>중 재 자</h1>항상 선을 행할 준비가 되어 있는 부드럽고 친절한 이타주의자입니다.";
+                        bgColor = "rgba(39,122,100,0.05)";
+                        break;
+                    default:
+                        resultMessage = "알수없음"
+                }*/
+            }
+
+            resultMessage = `<h1 style=color:rgb(${rgb})>${type}</h1><h2>${info}</h2>`;
             $('.result-message').html(resultMessage);
 
             for (let i = 0; i < maxPredictions; i++) {
@@ -243,7 +457,6 @@
                     */arguments
                 mbti = prediction[i].className;
                 var color;
-                var bgColor;
                 switch (mbti) {
                     case "ESTJ":
                         color = "#587A4B";
@@ -299,11 +512,11 @@
                 percent = Math.round(prediction[i].probability.toFixed(2) * 100);
 
                 if (percent !== 0) {
-                    const classPrediction = `<span class=\"mbti\"><span class=\"mbti-type\">${prediction[i].className}</span><span class=\"graph\"><span style=\"width:${percent}%;\ background:${color}">${percent}%</span></span>`;
+                    const classPrediction = `<span class=\"mbti\"><span class=\"mbti-type\">${prediction[i].className}</span><span class=\"graph\"><span style=\"width:${percent}%;\ background:${color}" > ${percent}%</span ></span >`;
                     labelContainer.childNodes[i].innerHTML = classPrediction;
                 }
             }
-            document.getElementById("bg-box").style.backgroundColor = bgColor;
+            document.getElementById("bg-box").style.backgroundColor = `rgba(${rgb},0.05)`;
         }
     </script>
 </body>
