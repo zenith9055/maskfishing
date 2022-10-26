@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+    <title>내가 ENTJ가 될 상인가</title>
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-63589f48ebc138e8"></script>
+
+</head>
+
+<body>
+    <!--
+    <nav class="navbar navbar-expand-lg nav-distance">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">MBTI 관상</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    <a class="nav-link" href="#">Features</a>
+                    <a class="nav-link" href="#">Pricing</a>
+                    <a class="nav-link disabled">Disabled</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    -->
+
+    <section class="section">
+        <h1 class="title">MBTI 관상</h1>
+        <h2 class="subtitle">내가 ENTJ가 될 상인가</h2>
+    </section>
+
+    <section class="youtube">
+        <div class="container mt-5 youtube-cover d-flex flex-row-reverse"><a href="" class="youtube-link">By
+                CSD100Gom</a><img src="" alt="" class="youtube-icon"></div>
+    </section>
+
+    <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <div class="container file-upload" id="bg-box">
+        <div class="image-upload-wrap">
+            <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
+            <div class="drag-text">
+                <h1><img src="img/upload.png" class="mt-5 pt-5 upload"></h1>
+                <h3 class="mb-5 pb-5 pt-4 upload-text">얼굴 사진을 올려놓거나 눌러서 업로드하세요!</h3>
+            </div>
+        </div>
+        <div class="file-upload-content">
+            <img class="file-upload-image" id="face-image" src="#" alt="your image" />
+            <p class="result-message"></p>
+            <div id="label-container"></div>
+            <div class="image-title-wrap">
+
+                <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                <div class="addthis_inline_share_toolbox" style="margin-top:5px"></div>
+
+                <button type="button" onclick="window.location.reload()" class="remove-image">다른 사진으로
+                    재시도</span></button>
+                <!--
+                <button type="button" onclick="removeUpload()" class="remove-image">Remove <span
+                        class="image-title">Uploaded Image</span></button>
+                        -->
+            </div>
+        </div>
+    </div>
+    <div id="webcam-container"></div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"
+        integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+    <script>
+        function readURL(input) {
+            $('.result-message').html("<div class=\"spinner\"></div>");
+
+            if (input.files && input.files[0]) {
+
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('.image-upload-wrap').hide();
+
+                    $('.file-upload-image').attr('src', e.target.result);
+                    $('.file-upload-content').show();
+
+                    $('.image-title').html(input.files[0].name);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+
+
+                init().then(() => {
+                    predict();
+                });
+
+            } else {
+                removeUpload();
+            }
+        }
+
+        function removeUpload() {
+            $('.file-upload-input').replaceWith($('.file-upload-input').clone());
+            $('.file-upload-content').hide();
+            $('.image-upload-wrap').show();
+        }
+        $('.image-upload-wrap').bind('dragover', function () {
+            $('.image-upload-wrap').addClass('image-dropping');
+        });
+        $('.image-upload-wrap').bind('dragleave', function () {
+            $('.image-upload-wrap').removeClass('image-dropping');
+        });
+    </script>
+
+
+    <script type="text/javascript">
+        // More API functions here:
+        // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
+
+        // the link to your model provided by Teachable Machine export panel
+        const URL = "https://teachablemachine.withgoogle.com/models/HeOPDgpl0/";
+
+        let model, webcam, labelContainer, maxPredictions;
+
+        // Load the image model and setup the webcam
+        async function init() {
+            const modelURL = URL + "model.json";
+            const metadataURL = URL + "metadata.json";
+
+            // load the model and metadata
+            // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
+            // or files from your local hard drive
+            // Note: the pose library adds "tmImage" object to your window (window.tmImage)
+            model = await tmImage.load(modelURL, metadataURL);
+            maxPredictions = model.getTotalClasses();
+
+            // append elements to the DOM
+            labelContainer = document.getElementById("label-container");
+            labelContainer.innerHTML = "";
+            for (let i = 0; i < maxPredictions; i++) {
+                // and class labels
+                labelContainer.appendChild(document.createElement("div"));
+            }
+        }
+
+        // run the webcam image through the image model
+        async function predict() {
+            // predict can take in an image, video or canvas html element
+            var image = document.getElementById("face-image")
+            const prediction = await model.predict(image, false);
+            prediction.sort((a, b) => parseFloat(b.probability) - parseFloat(a.probability));
+
+            var resultMessage;
+            switch (prediction[0].className) {
+                case "ESTJ":
+                    resultMessage = "경영자 / 사물과 사람을 관리하는 데 뛰어난 능력을 지닌 경영자입니다.";
+                    bgColor = "rgba(88,121,75,0.05)";
+                    break;
+                case "ESTP":
+                    resultMessage = "사업가 / 위험을 기꺼이 감수하는 성격으로, 영리하고 에너지 넘치며 관찰력이 뛰어난 사업가입니다.";
+                    bgColor = "rgba(255,151,123,0.05)";
+                    break;
+                case "ESFJ":
+                    resultMessage = "집정관 / 배려심이 넘치고 항상 다른 사람을 도울 준비가 되어 있는 성격으로, 인기가 많고 사교성 높은 마당발입니다.";
+                    bgColor = "rgba(255,207,207,0.05)";
+                    break;
+                case "ESFP":
+                    resultMessage = "연예인 / 즉흥적이고 넘치는 에너지와 열정으로 주변 사람을 즐겁게 하는 연예인입니다.";
+                    bgColor = "rgba(244,112,126,0.05)";
+                    break;
+                case "ENTJ":
+                    resultMessage = "통솔자 / 항상 문제 해결 방법을 찾아내는 성격으로, 대담하고 상상력이 풍부하며 의지가 강력한 지도자입니다.";
+                    bgColor = "rgba(52,98,163,0.05)";
+                    break;
+                case "ENTP":
+                    resultMessage = "변론가 / 지적 도전을 즐기는 여리하고 호기심이 많은 사색가입니다.";
+                    bgColor = "rgba(221,88,67,0.05)";
+                    break;
+                case "ENFJ":
+                    resultMessage = "선도자 / 청중을 사로잡고 의욕을 불어넣는 카리스마 넘치는 지도자입니다.";
+                    bgColor = "rgba(2,206,176,0.05)";
+                    break;
+                case "ENFP":
+                    resultMessage = "활동가 / 열정적이고 창의적인 성격으로, 긍정적으로 삶을 바라보는 사교적이면서도 자유로운 영혼입니다.";
+                    bgColor = "rgba(255,163,72,0.05)";
+                    break;
+                case "ISTJ":
+                    resultMessage = "현실주의자 / 사실을 중시하는 믿음직한 현실주의자입니다.";
+                    bgColor = "rgba(211,211,211,0.05)";
+                    break;
+                case "ISTP":
+                    resultMessage = "장인 / 대담하면서도 현실적인 성격으로, 모든 종류의 도구를 자유자재로 다루는 장인입니다.";
+                    bgColor = "rgba(70,144,100,0.05)";
+                    break;
+                case "ISFJ":
+                    resultMessage = "수호자 / 주변 사람을 보호할 준비가 되어 있는 헌신적이고 따뜻한 수호자입니다.";
+                    bgColor = "rgba(255,204,113,0.05)";
+                    break;
+                case "ISFP":
+                    resultMessage = "모험가 / 항상 새로운 경험을 추구하는 유연하고 매력 넘치는 예술가입니다.";
+                    bgColor = "rgba(166,191,111,0.05)";
+                    break;
+                case "INTJ":
+                    resultMessage = "전략가 / 모든 일에 대해 계획을 세우며 상상력이 풍부한 전략가입니다.";
+                    bgColor = "rgba(186,176,255,0.05)";
+                    break;
+                case "INTP":
+                    resultMessage = "논리술사 / 지식을 끝없이 갈망하는 혁신적인 발명가입니다.";
+                    bgColor = "rgba(127,194,244,0.05)";
+                    break;
+                case "INFJ":
+                    resultMessage = "옹호자 / 차분하고 신비한 분위기를  풍기는 성격으로, 다른 사람에게 의욕을 불어넣는 이상주의자입니다.";
+                    bgColor = "rgba(192,216,255,0.05)";
+                    break;
+                case "INFP":
+                    resultMessage = "중재자 / 항상 선을 행할 준비가 되어 있는 부드럽고 친절한 이타주의자입니다.";
+                    bgColor = "rgba(39,122,100,0.05)";
+                    break;
+                default:
+                    resultMessage = "알수없음"
+            }
+            $('.result-message').html(resultMessage);
+
+            for (let i = 0; i < maxPredictions; i++) {
+                /*
+                const classPrediction =
+                    prediction[i].className +
+                    ": " +
+                    prediction[i].probability.toFixed(2);
+                    */arguments
+                mbti = prediction[i].className;
+                var color;
+                var bgColor;
+                switch (mbti) {
+                    case "ESTJ":
+                        color = "#587A4B";
+                        break;
+                    case "ESTP":
+                        color = "#FF977B";
+                        break;
+                    case "ESFJ":
+                        color = "#FFCFCF";
+                        break;
+                    case "ESFP":
+                        color = "#E0707E";
+                        break;
+                    case "ENTJ":
+                        color = "#3462A3";
+                        break;
+                    case "ENTP":
+                        color = "#DD5843";
+                        break;
+                    case "ENFJ":
+                        color = "#52CEB0";
+                        break;
+                    case "ENFP":
+                        color = "#FFA348";
+                        break;
+                    case "ISTJ":
+                        color = "#BBBBBB";
+                        break;
+                    case "ISTP":
+                        color = "#2A718C";
+                        break;
+                    case "ISFJ":
+                        color = "#FFCC71";
+                        break;
+                    case "ISFP":
+                        color = "#A6BF6F";
+                        break;
+                    case "INTJ":
+                        color = "#BAB0FF";
+                        break;
+                    case "INTP":
+                        color = "#7FC2F4";
+                        break;
+                    case "INFJ":
+                        color = "#C0D8FF";
+                        break;
+                    case "INFP":
+                        color = "#277A64";
+                        break;
+                    default:
+                        resultMessage = "알수없음"
+                }
+                percent = Math.round(prediction[i].probability.toFixed(2) * 100);
+
+                if (percent !== 0) {
+                    const classPrediction = `<span class=\"mbti\"><span class=\"mbti-type\">${prediction[i].className}</span><span class=\"graph\"><span style=\"width:${percent}%;\ background:${color}">${percent}%</span></span>`;
+                    labelContainer.childNodes[i].innerHTML = classPrediction;
+                }
+            }
+            document.getElementById("bg-box").style.backgroundColor = bgColor;
+        }
+    </script>
+</body>
+
+<!--  Copyright (c) 2022 by Aaron Vanston (https://codepen.io/aaronvanston/pen/yNYOXR)
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
+
+</html>
