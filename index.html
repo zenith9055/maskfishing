@@ -131,12 +131,21 @@
         // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
 
         // the link to your model provided by Teachable Machine export panel
-        const URL = "https://teachablemachine.withgoogle.com/models/HeOPDgpl0/";
 
         let model, webcam, labelContainer, maxPredictions;
 
         // Load the image model and setup the webcam
         async function init() {
+            var gender = document.getElementById("gender");
+            console.log(`gender checked : ${gender.checked}`);
+
+            let URL = "https://teachablemachine.withgoogle.com/models/aXZkxmEPS/"; // 여자 MBTI 관상 학습 모델
+
+            if (gender.checked) {
+                URL = "https://teachablemachine.withgoogle.com/models/uyr7bJCf2/"; // 여자 MBTI 관상 학습 모델
+            }
+            console.log(`URL : ${URL}`);
+
             const modelURL = URL + "model.json";
             const metadataURL = URL + "metadata.json";
 
