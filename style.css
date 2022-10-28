@@ -26,7 +26,8 @@ h2 {
   /*background-color: #ffffff;
   width: 600px;*/
 
-  padding: 2% 0;
+  padding: 15% 3%;
+  margin: 0 auto;
   border-radius: 10px;
   /*border: solid 1.5px #f6f7fa;*/
   background-color: #f6f7fa;
@@ -125,11 +126,15 @@ h2 {
   margin-top: 10px;
   font-size: 1.5rem;
   color: #fff;
-  background: /*#cd4535;*/ rgb(70, 144, 100);
+  background:
+    /*#cd4535;*/
+    rgb(70, 144, 100);
   border: none;
   padding: 10px;
   border-radius: 20px;
-  border-bottom: 4px solid /*#b02818;*/ rgb(20, 100, 88);
+  border-bottom: 4px solid
+    /*#b02818;*/
+    rgb(20, 100, 88);
   transition: all 0.2s ease;
   outline: none;
   text-transform: uppercase;
@@ -137,7 +142,9 @@ h2 {
 }
 
 .remove-image:hover {
-  background: /*#c13b2a;*/ rgb(39, 122, 100);
+  background:
+    /*#c13b2a;*/
+    rgb(39, 122, 100);
   color: #fff;
   transition: all 0.2s ease;
   cursor: pointer;
@@ -147,6 +154,7 @@ h2 {
   border: 0;
   transition: all 0.2s ease;
 }
+
 /*
 .nav-distance {
   padding: 2.1% 7.7%;
@@ -198,8 +206,8 @@ h2 {
 .mbti {
   display: flex;
   padding-top: 0.2rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding-left: 3.5rem;
+  padding-right: 3.5rem;
   align-items: center;
 }
 
@@ -207,9 +215,10 @@ h2 {
   font-size: 1.5rem;
   padding-right: 1rem;
   width: 15%;
-  text-align: right;
+  text-align: left;
   vertical-align: middle;
 }
+
 .graph {
   display: flex;
   width: 85%;
@@ -240,6 +249,7 @@ h2 {
     transform: rotate(360deg);
   }
 }
+
 .spinner {
   display: inline-block;
   width: 50px;
@@ -278,6 +288,7 @@ h2 {
   html {
     font-size: 12px;
   }
+
   .navbar-brand {
     font-size: 2rem;
   }
@@ -316,7 +327,7 @@ label {
   transition: 0.3s;
 }
 
-.knob > i {
+.knob>i {
   position: absolute;
   width: 4px;
   height: 18px;
@@ -325,8 +336,8 @@ label {
   left: calc(50% - 2px);
 }
 
-.knob > i:before,
-.knob > i:after {
+.knob>i:before,
+.knob>i:after {
   width: 6px;
   position: absolute;
   top: 42%;
@@ -335,35 +346,37 @@ label {
   background-color: #f470a7;
 }
 
-.knob > i:before {
+.knob>i:before {
   left: 4px;
 }
-.knob > i:after {
+
+.knob>i:after {
   left: -6px;
 }
 
-input:checked + label > .knob {
+input:checked+label>.knob {
   box-shadow: 0 0 0 4px #a1c6dd inset;
   background-color: #e2ecf4;
   transform: translateX(49px) rotate(-140deg);
 }
 
-input:checked + label > .knob > i {
+input:checked+label>.knob>i {
   background-color: #a1c6dd;
 }
 
-input:checked + label > .knob > i:after,
-input:checked + label > .knob > i:before {
+input:checked+label>.knob>i:after,
+input:checked+label>.knob>i:before {
   background-color: #a1c6dd;
 }
 
-input:checked + label > .knob > i:after {
+input:checked+label>.knob>i:after {
   top: 14.5px;
   width: 12px;
   left: -7px;
   transform: rotate(45deg);
 }
-input:checked + label > .knob > i:before {
+
+input:checked+label>.knob>i:before {
   top: 13px;
   width: 12px;
   left: 0px;
@@ -382,6 +395,10 @@ h6 {
 
 h3 {
   color: red;
+}
+
+h4 {
+  margin-top: 10px;
 }
 
 h6 {
