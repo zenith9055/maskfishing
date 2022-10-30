@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 
-    <title>재미로 보는 MBTI 관상</title>
+    <title>재미로 보는 관상별 성격</title>
     <link rel="stylesheet" href="style.css">
 
     <!-- Go to www.addthis.com/dashboard to customize your tools -->
@@ -18,8 +18,8 @@
 
 <body>
     <section class="section">
-        <h1 class="title">재미로 보는 MBTI 관상</h1>
-        <h2 class="subtitle">내 관상은 어떤 MBTI일까?</h2>
+        <h1 class="title">재미로 보는 관상별 성격</h1>
+        <h2 class="subtitle">나와 같은 관상을 가진 연예인은?</h2>
     </section>
 
     <section class="youtube">
@@ -416,70 +416,88 @@
                     prediction[i].probability.toFixed(2);
                     */arguments
                 mbti = prediction[i].className;
+                let mbtiKorean;
+
                 var color;
                 switch (mbti) {
                     case "ESTJ":
                         //color = "#587A4B";
                         color = mbtiArr[mbtiTypes.ESTJ][mbtiInfo.rgb];
+                        mbtiKorean = "경영자";
                         break;
                     case "ESTP":
                         color = mbtiArr[mbtiTypes.ESTP][mbtiInfo.rgb];
+                        mbtiKorean = "사업가";
                         //color = "#FF977B";
                         break;
                     case "ESFJ":
                         color = mbtiArr[mbtiTypes.ESFJ][mbtiInfo.rgb];
+                        mbtiKorean = "집정관";
                         //color = "#FFCFCF";
                         break;
                     case "ESFP":
                         color = mbtiArr[mbtiTypes.ESFP][mbtiInfo.rgb];
+                        mbtiKorean = "연예인";
                         //color = "#E0707E";
                         break;
                     case "ENTJ":
                         color = mbtiArr[mbtiTypes.ENTJ][mbtiInfo.rgb];
+                        mbtiKorean = "통솔자";
                         //color = "#3462A3";
                         break;
                     case "ENTP":
                         color = mbtiArr[mbtiTypes.ENTP][mbtiInfo.rgb];
+                        mbtiKorean = "변론가";
                         //color = "#DD5843";
                         break;
                     case "ENFJ":
                         color = mbtiArr[mbtiTypes.ENFJ][mbtiInfo.rgb];
+                        mbtiKorean = "선도자";
                         //color = "#52CEB0";
                         break;
                     case "ENFP":
                         color = mbtiArr[mbtiTypes.ENFP][mbtiInfo.rgb];
+                        mbtiKorean = "활동가";
                         //color = "#FFA348";
                         break;
                     case "ISTJ":
                         color = mbtiArr[mbtiTypes.ISTJ][mbtiInfo.rgb];
+                        mbtiKorean = "현실주의자";
                         //color = "#BBBBBB";
                         break;
                     case "ISTP":
                         color = mbtiArr[mbtiTypes.ISTP][mbtiInfo.rgb];
+                        mbtiKorean = "장인";
                         //color = "#2A718C";
                         break;
                     case "ISFJ":
                         color = mbtiArr[mbtiTypes.ISFJ][mbtiInfo.rgb];
+                        mbtiKorean = "수호자";
                         //color = "#FFCC71";
                         break;
                     case "ISFP":
                         color = mbtiArr[mbtiTypes.ISFP][mbtiInfo.rgb];
+                        mbtiKorean = "모험가";
                         //color = "#A6BF6F";
                         break;
                     case "INTJ":
                         color = mbtiArr[mbtiTypes.INTJ][mbtiInfo.rgb];
+                        mbtiKorean = "전략가";
                         //color = "#BAB0FF";
                         break;
                     case "INTP":
                         color = mbtiArr[mbtiTypes.INTP][mbtiInfo.rgb];
+                        mbtiKorean = "논리술사";
                         //color = "#7FC2F4";
                         break;
                     case "INFJ":
                         color = mbtiArr[mbtiTypes.INFJ][mbtiInfo.rgb];
+                        mbtiKorean = "옹호자";
                         //color = "#C0D8FF";
                         break;
                     case "INFP":
                         color = mbtiArr[mbtiTypes.INFP][mbtiInfo.rgb];
+                        mbtiKorean = "중재자";
                         //color = "#277A64";
                         break;
                     default:
@@ -489,7 +507,7 @@
 
                 if (percent !== 0) {
 
-                    const classPrediction = `<span class=\"mbti\"><span class=\"mbti-type\">${prediction[i].className}</span><span class=\"graph\" style=\"background:rgba(${color},0.1)"><span style=\"width:${percent}%;\ background:rgb(${color});" > ${percent}%</span ></span >`;
+                    const classPrediction = `<span class=\"mbti\"><span class=\"mbti-type\">${mbtiKorean}</span><span class=\"graph\" style=\"background:rgba(${color},0.1)"><span style=\"width:${percent}%;\ background:rgb(${color});" > ${percent}%</span ></span >`;
                     labelContainer.childNodes[i].innerHTML = classPrediction;
                     /*
                     const classPrediction = `<span class=\"mbti\"><span class=\"mbti-type\">${prediction[i].className}</span><span class=\"graph\" ${color}><span style=\"width:${percent}%;\ background:${color}" > ${percent}%</span ></span >`;
@@ -500,7 +518,7 @@
             }
             document.getElementById("bg-box").style.backgroundColor = `rgba(${rgb},0.05)`;
             var celebDiv = document.getElementById("celeb-div");
-            celebDiv.innerHTML = `<a href=\"https://www.16personalities.com/ko/%EC%84%B1%EA%B2%A9%EC%9C%A0%ED%98%95-${prediction[0].className}\"<class=\"mbti-link\"><h4>${prediction[0].className} 더 알아보기</h4></a >    <h4 style="color:rgb(${rgb})">${type} 관상의 연예인 : ${celeb}</h4>`;
+            celebDiv.innerHTML = `<a href=\"https://www.16personalities.com/ko/%EC%84%B1%EA%B2%A9%EC%9C%A0%ED%98%95-${prediction[0].className}\"<class=\"mbti-link\"><h4>${type}에 대해 더 알아보기</h4></a >    <h4 style="color:rgb(${rgb})">[${type} 관상의 연예인]<br>${celeb}</h4>`;
         }
     </script>
 </body>
