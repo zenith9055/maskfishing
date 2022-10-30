@@ -404,3 +404,8 @@ h4 {
 h6 {
   color: gray;
 }
+
+.ad-banner {
+  width: 320px;
+  margin: 0 auto;
+}
