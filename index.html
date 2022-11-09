@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 
-    <title>재미로 보는 관상별 성격</title>
+    <title>마기꾼 테스트</title>
     <link rel="stylesheet" href="style.css">
 
     <!-- Go to www.addthis.com/dashboard to customize your tools -->
@@ -18,17 +18,16 @@
 
 <body>
     <section class="section">
-        <h1 class="title">재미로 보는 관상별 성격</h1>
-        <h2 class="subtitle">나와 같은 관상을 가진 연예인은?</h2>
+        <h1 class="title">마기꾼 테스트</h1>
+        <!-- <h2 class="subtitle">인공지능이 보는 나는?</h2> -->
     </section>
 
     <section class="youtube">
         <div class="container mt-5 youtube-cover d-flex flex-row-reverse">
             <!-- <img src="favicon.png" alt=""
-                class="youtube-icon">-->By
-            CSD100Gom
+                class="youtube-icon">-->
         </div>
-        <h2 class="subtitle">성별을 선택해주세요.</h2>
+        <h3 class="subtitle">성별을 선택해주세요.</h3>
 
         <!-- 젠더 토글 스위치-->
         <div class="gender-container">
@@ -50,7 +49,7 @@
         <div class="image-upload-wrap">
             <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
             <div class="drag-text">
-                <h1><img src="img/upload.png" class="mt-5 pt-5 upload"></h1>
+                <h1><img src="img/upload.png" id="upload" class="mt-5 pt-5 upload"></h1>
                 <h3 class="mb-5 pb-5 pt-4 upload-text">얼굴 사진을 올려놓거나 눌러서 업로드하세요!</h3>
             </div>
         </div>
@@ -71,16 +70,19 @@
         </div>
     </div>
 
+    <!-- 배너 광고 부분
+
     <div class="ad-banner">
         <ins class="kakao_ad_area" style="display:none;" data-ad-unit="DAN-JeHqEQ8HOjbw4dQL" data-ad-width="320"
             data-ad-height="100"></ins>
 
         <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
     </div>
+-->
+
 
     <footer>
         <h3>★ 사진은 절대 어디에도 보관 및 활용되지 않습니다. </h3>
-        <h6>★ 내용 참조 : https://www.16personalities.com/ko </h6>
         <h6>★ E-Mail : csd100gom@gmail.com </h6>
         <h6>© CSD100Gom 2022. All Rights Reserved.</h6>
     </footer>
@@ -96,7 +98,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
     <script>
         function readURL(input) {
-            $('.result-message').html("<div class=\"spinner\"></div><h2>AI가 열심히 비교분석 중입니다.<h2>");
+            $('.result-message').html("<div class=\"spinner\"></div><h2>AI가 마기꾼인지 판단중입니다.<h2>");
 
             if (input.files && input.files[0]) {
 
@@ -150,10 +152,10 @@
             var gender = document.getElementById("gender");
             console.log(`gender checked : ${gender.checked}`);
 
-            let URL = "https://teachablemachine.withgoogle.com/models/aXZkxmEPS/"; // 여자 MBTI 관상 학습 모델
+            let URL = "https://teachablemachine.withgoogle.com/models/Uu8Yr3CgZ/"; // 여자 마기꾼 학습 모델 미지정
 
             if (gender.checked) {
-                URL = "https://teachablemachine.withgoogle.com/models/uyr7bJCf2/"; // 남자 MBTI 관상 학습 모델
+                URL = "https://teachablemachine.withgoogle.com/models/ki_kJvAAA/"; // 남자 마기꾼 학습 모델
             }
             console.log(`URL : ${URL}`);
 
@@ -170,365 +172,52 @@
             // append elements to the DOM
             labelContainer = document.getElementById("label-container");
             labelContainer.innerHTML = "";
-            for (let i = 0; i < maxPredictions; i++) {
-                // and class labels
-                labelContainer.appendChild(document.createElement("div"));
-            }
+            labelContainer.appendChild(document.createElement("div"));
         }
 
         // run the webcam image through the image model
         async function predict() {
-            // MBTI DATA
-            const mbtiTypes = { // MBTI Type
-                ESTJ: 0,
-                ESTP: 1,
-                ESFJ: 2,
-                ESFP: 3,
-                ENTJ: 4,
-                ENTP: 5,
-                ENFJ: 6,
-                ENFP: 7,
-                ISTJ: 8,
-                ISTP: 9,
-                ISFJ: 10,
-                ISFP: 11,
-                INTJ: 12,
-                INTP: 13,
-                INFJ: 14,
-                INFP: 15,
-            };
-
-            const mbtiInfo = { // MBTI Info : name, type, desc, rgb
-                name: 0,
-                type: 1,
-                desc: 2,
-                rgb: 3,
-                celeb_female: 4,
-                celeb_male: 5
-            };
-
-            const mbtiArr = [
-                [
-                    "ESTJ",
-                    "경영자",
-                    "경영자는 전통과 질서를 중시하는 성격으로, 자신이 생각하는 옳고 그름과 사회적 기준에 따라 가족과 공동체가 화합할 수 있도록 노력합니다. 이들은 정직과 헌신과 존엄성을 중시하며, 어려운 길을 기꺼이 앞장서고 다른 사람들에게 명확한 조언과 지도를 제공합니다.",
-                    "88,121,75",
-                    "민지(뉴진스), 남지현, 예린(여자친구),  모니카, 한가인",
-                    "지민(BTS), 류준열, 뱀뱀(갓세븐), 창조(틴탑), 김준수(JYJ)"
-                ],
-                [
-                    "ESTP",
-                    "사업가",
-                    "사업가는 항상 주변 사람에게 영향력을 행사하곤 합니다. 파티에서 가는 곳마다 사람들에게 둘러싸여 있는 사람을 발견한다면 아마 사업가일 것입니다. 이들은 직설적인 유머 감각을 지니고 있으며 수많은 사람의 관심을 받는 일을 즐깁니다.",
-                    "255,151,123",
-                    "지수(블랙핑크), 이유비, 서현숙(치어리더), 경리(나인뮤지스)",
-                    "조나단, 성찬(NCT), 정일훈(비투비), 태현(TXT), 전현무"
-                ],
-                [
-                    "ESFJ",
-                    "집정관",
-                    "집정관에게 인생이란 남과 함께 나눌 때 가장 즐거운 것입니다. 이들은 여러 사람을 하나로 모으는 역할을 하며 솔직하고 개방적인 태도로 친구와 연인과 이웃을 대합니다. 집정관이라고 모든 사람을 좋아하고 무한한 관용을 베푸는 것은 아닙니다.",
-                    "255,207,207",
-                    "리사(블랙핑크), 예지(ITZY), 혜리(걸스데이), 오나라",
-                    "황민현(뉴이스트), 이대휘(워너원), 피오, 광희, 박보검"
-                ],
-                [
-                    "ESFP",
-                    "연예인",
-                    "연예인은 즉흥적으로 노래하고 춤을 추는 일을 즐기는 성격입니다. 이들은 지금 이 순간을 즐기며 남들도 자신과 같은 즐거움을 느낄 수 있기를 바랍니다. 또한 남을 응원하는 데 기꺼이 시간과 에너지를 투자하며, 매우 매력적인 방식으로 다른 사람의 기운을 북돋곤 합니다.",
-                    "244,112,126",
-                    "강혜원(아이즈원), 지효(트와이스), 윤아(소녀시대), 이선빈",
-                    "재현(NCT), 강승윤(위너), 사이먼도미닉, 비, 김영철"
-                ],
-                [
-                    "ENTJ",
-                    "통솔자",
-                    "통솔자는 타고난 지도자라고 할 수 있습니다. 이들은 카리스마와 자신감을 지니고 있으며 자신의 권한을 이용해 사람들이 공통된 목표를 위해 함께 노력하도록 이끕니다. 또한 이들은 냉철한 이성을 지닌 것으로 유명하며, 자신이 원하는 것을 성취하기 위해 열정과 결단력과 날카로운 지적 능력을 활용합니다.",
-                    "52,98,163",
-                    "이호정(모델), 희진(이달의 소녀), 서현(소녀시대), 윤하",
-                    "디오(EXO), 지코(블락비), 키(샤이니), 스윙스, 붐"
-                ],
-                [
-                    "ENTP",
-                    "변론가",
-                    "변론가는 두뇌 회전이 빠르고 대담한 성격으로 현재 상황에 이의를 제기하는 데 거리낌이 없습니다. 변론가는 어떤 의견이나 사람에 반대하는 일을 두려워하지 않으며, 논란이 될 만한 주제에 대해 격렬하게 논쟁하는 일을 즐깁니다.",
-                    "221,88,67",
-                    "리정(댄서), 펀치, 김세정(IOI), 강지영(카라), 김희선",
-                    "민기(에이티즈), 육성재(비투비), 이찬혁, 이이경, 곽범"
-                ],
-                [
-                    "ENFJ",
-                    "선도자",
-                    "선도자는 삶에서 위대한 사명을 위해 힘써야 한다는 느낌을 받곤 합니다. 사려 깊고 이상주의적 성향을 지닌 선도자는 다른 사람과 주변 세상에 긍정적인 영향력을 발휘하기 위해 최선을 다하며, 어려운 상황에서도 올바른 일을 할 기회를 마다하지 않습니다.",
-                    "2,206,176",
-                    "리아(ITZY), 낸시(모모랜드), 이성경, 신세경, 신민아",
-                    "민규(세븐틴), 강다니엘(워너원), 이찬원, 박군, 정우성"
-                ],
-                [
-                    "ENFP",
-                    "활동가",
-                    "활동가는 진정으로 자유로운 영혼이라고 할 수 있으며 외향적이고 솔직하며 개방적인 성격입니다. 이들은 활기차고 낙관적인 태도로 삶을 대하며 다른 사람들 사이에서 돋보이곤 합니다. 그러나 신나는 삶을 사는 것처럼 보인다고 해서 즐거움만을 좇는 성격은 아니며, 다른 사람과 감정적으로 깊고 의미 있는 관계를 맺는 일을 추구합니다.",
-                    "255,163,72",
-                    "로제(블랙핑크), 서지수(러블리즈), 비비, 박진주, 아이키",
-                    "루카스(NCT), 부승관(세븐틴), 넉살, 유연석, 싸이"
-                ],
-                [
-                    "ISTJ",
-                    "현실주의자",
-                    "현실주의자는 진실하게 행동하는 자신의 모습에서 자부심을 느끼며, 자기 생각을 솔직하게 이야기하고 어떤 것에 헌신하기로 한 경우 최선을 다합니다. 현실주의자는 인구의 상당 부분을 차지합니다. 화려한 삶이나 다른 사람의 주의를 끄는 일에는 관심이 없으며, 안정된 사회를 위해 자신의 몫보다 많은 기여를 하곤 합니다.",
-                    "211,211,211",
-                    "보나(우주소녀), 신비(VIVIZ), 써니(소녀시대), 이세영",
-                    "성훈(엔하이픈), 마크(GOT7), 이석훈(SG워너비), 차태현"
-                ],
-                [
-                    "ISTP",
-                    "장인",
-                    "장인은 이성과 호기심을 통해 세상을 바라보며 눈과 손으로 직접 탐구하는 일을 즐깁니다. 이들은 타고난 손기술을 지니고 있으며, 다양한 프로젝트에서 유용하고 재미있는 물건을 만들어 내고 주변 환경에서 배울 점을 찾습니다. 장인은 보통 기술자나 엔지니어로 일하는 경우가 많으며 물건을 직접 분해하고 조립해 개선하는 일을 즐깁니다.",
-                    "70,144,100",
-                    "안유진(IVE), 연정(우주소녀), 권진아, 나연(트와이스)",
-                    "슈가(BTS), 버논(세븐틴), 휴닝카이(TXT), 주우재, 박명수"
-                ],
-                [
-                    "ISFJ",
-                    "수호자",
-                    "수호자는 겸손한 자세로 세상을 지탱하는 역할을 합니다. 이들은 근면하고 헌신적인 성격으로 주변 사람들에 대한 깊은 책임감을 느낍니다. 이들은 마감 기한을 철저히 지키고 동료와 친구의 생일과 기념일을 챙기며, 기존 질서를 유지하고 주변 사람을 배려하는 동시에 기꺼이 도움의 손길을 건넵니다.",
-                    "255,204,113",
-                    "정채연(IOI), 정연(트와이스), 헤이즈, 문채원, 신지(코요태)",
-                    "이민혁(비투비), 시우민(EXO), 장민호, 윤계상, 김경호"
-                ],
-                [
-                    "ISFP",
-                    "모험가",
-                    "모험가는 진정한 의미의 예술가라고 할 수 있습니다. 하지만 모험가라고 반드시 예술 업계에만 종사하는 것은 아닙니다. 이들에게는 삶 자체가 자신을 표현하기 위한 캔버스이기 때문입니다. 이들은 입는 옷부터 여가 시간을 보내는 방식까지 다양한 측면에서 자신의 독특한 개성을 생생히 드러냅니다.",
-                    "166,191,111",
-                    "설현(AOA), 윈터(에스파) 최유정, 조이현, 김다미, 수지",
-                    "백현(EXO), 양세찬, 권정열, 조정석, 김종국, 유재석"
-                ],
-                [
-                    "INTJ",
-                    "전략가",
-                    "최고가 되는 것은 외로운 일입니다. 매우 희귀한 성격이면서도 뛰어난 능력을 지닌 전략가는 이러한 말의 의미를 잘 알고 있습니다. 전략가는 이성적이면서도 두뇌 회전이 빠른 성격으로, 자신의 뛰어난 사고 능력을 자랑스러워하며 거짓말과 위선을 꿰뚫어 보는 능력이 있습니다.",
-                    "186,176,255",
-                    "류진(ITZY), 조유리(아이즈원), 미노이, 보아, 구혜선",
-                    "차은우(아스트로), 이수혁, 에릭(신화), 유준상, 이경규"
-                ],
-                [
-                    "INTP",
-                    "논리술사",
-                    "논리술사는 자신의 독특한 관점과 활기 넘치는 지성에 자부심을 느끼며, 우주의 미스터리에 대해 깊이 생각하곤 합니다. 유명한 철학자와 과학자 중 논리술사 성격이 많은 것도 이 때문일 것입니다. 논리술사는 상당히 희귀한 성격이지만 뛰어난 창의성과 독창성으로 많은 사람 사이에서 존재감을 드러내곤 합니다.",
-                    "127,194,244",
-                    "미미(오마이걸), 안예은, 권나라, 고아성, 한혜진(모델)",
-                    "진(BTS), 송강, 창모, 적재, 김우빈, 서인국, 정형돈"
-                ],
-                [
-                    "INFJ",
-                    "옹호자",
-                    "옹호자는 매우 희귀한 성격임에도 불구하고 세상에 큰 영향력을 발휘하곤 합니다. 이들은 이상주의적이고 원칙주의적인 성격으로, 삶에 순응하는 대신 삶에 맞서 변화를 만들어 내고자 합니다. 이들에게 성공이란 돈이나 지위가 아니라 자아를 실현하고 다른 사람을 도우며 세상에서 선을 실천하는 일입니다.",
-                    "192,216,255",
-                    "김민주(아이즈원), 아이유, 태연(소녀시대), 설인아, 천우희",
-                    "남주혁, 서강준, 카이(EXO), 태양(빅뱅), 양세형, 조인성"
-                ],
-                [
-                    "INFP",
-                    "중재자",
-                    "중재자는 언뜻 보기에 조용하고 자신을 내세우지 않는 것처럼 보이지만, 사실은 에너지와 열정이 넘치는 마음을 지닌 성격입니다. 이들은 창의적이고 상상력이 뛰어나며 몽상을 즐기는 성격으로, 머릿속에서 수많은 이야기를 만들어 내곤 합니다. 또한 음악과 예술과 자연에 대한 감수성이 뛰어나며 다른 사람의 감정을 빠르게 알아차리곤 합니다.",
-                    "39,122,100",
-                    "강미나(IOI), 선미, 박은빈, 전소민, 한효주, 한지민",
-                    "뷔(BTS), 김희철(슈퍼주니어), 박서준, 구교환, 김종민"
-                ],
-            ];
-            // MBTI DATA END
-
             // predict can take in an image, video or canvas html element
             var image = document.getElementById("face-image")
             const prediction = await model.predict(image, false);
-            prediction.sort((a, b) => parseFloat(b.probability) - parseFloat(a.probability));
 
-            var resultMessage;
-            var mbtiNum;
-            var rgb;
-            var type;
-            var info;
-            var bgColor;
-            var celeb;
+            // 정렬 부분
+            /* prediction.sort((a, b) => parseFloat(b.probability) - parseFloat(a.probability));*/
 
-            switch (prediction[0].className) {
-                case "ESTJ":
-                    mbtiNum = mbtiTypes.ESTJ;
-                    break;
-                case "ESTP":
-                    mbtiNum = mbtiTypes.ESTP;
-                    break;
-                case "ESFJ":
-                    mbtiNum = mbtiTypes.ESFJ;
-                    break;
-                case "ESFP":
-                    mbtiNum = mbtiTypes.ESFP;
-                    break;
-                case "ENTJ":
-                    mbtiNum = mbtiTypes.ENTJ;
-                    break;
-                case "ENTP":
-                    mbtiNum = mbtiTypes.ENTP;
-                    break;
-                case "ENFJ":
-                    mbtiNum = mbtiTypes.ENFJ;
-                    break;
-                case "ENFP":
-                    mbtiNum = mbtiTypes.ENFP;
-                    break;
-                case "ISTJ":
-                    mbtiNum = mbtiTypes.ISTJ;
-                    break;
-                case "ISTP":
-                    mbtiNum = mbtiTypes.ISTP;
-                    break;
-                case "ISFJ":
-                    mbtiNum = mbtiTypes.ISFJ;
-                    break;
-                case "ISFP":
-                    mbtiNum = mbtiTypes.ISFP;
-                    break;
-                case "INTJ":
-                    mbtiNum = mbtiTypes.INTJ;
-                    break;
-                case "INTP":
-                    mbtiNum = mbtiTypes.INTP;
-                    break;
-                case "INFJ":
-                    mbtiNum = mbtiTypes.INFJ;
-                    break;
-                case "INFP":
-                    mbtiNum = mbtiTypes.INFP;
-                    break;
-                default:
-                    resultMessage = "알수없음"
-            }
+            let message;
 
-            rgb = mbtiArr[mbtiNum][mbtiInfo.rgb];
-            type = mbtiArr[mbtiNum][mbtiInfo.type];
-            info = mbtiArr[mbtiNum][mbtiInfo.desc];
-
-            if (gender.checked) {
-                celeb = mbtiArr[mbtiNum][mbtiInfo.celeb_male];
-            } else {
-                celeb = mbtiArr[mbtiNum][mbtiInfo.celeb_female];
-            }
-
-            resultMessage = `<h1 style=color:rgb(${rgb})>${type}</h1><h2>${info}</h2>`;
-            $('.result-message').html(resultMessage);
-
-            for (let i = 0; i < maxPredictions; i++) {
-                /*
+            /*
                 const classPrediction =
                     prediction[i].className +
                     ": " +
                     prediction[i].probability.toFixed(2);
                     */arguments
-                mbti = prediction[i].className;
-                let mbtiKorean;
 
-                var color;
-                switch (mbti) {
-                    case "ESTJ":
-                        //color = "#587A4B";
-                        color = mbtiArr[mbtiTypes.ESTJ][mbtiInfo.rgb];
-                        mbtiKorean = "경영자";
-                        break;
-                    case "ESTP":
-                        color = mbtiArr[mbtiTypes.ESTP][mbtiInfo.rgb];
-                        mbtiKorean = "사업가";
-                        //color = "#FF977B";
-                        break;
-                    case "ESFJ":
-                        color = mbtiArr[mbtiTypes.ESFJ][mbtiInfo.rgb];
-                        mbtiKorean = "집정관";
-                        //color = "#FFCFCF";
-                        break;
-                    case "ESFP":
-                        color = mbtiArr[mbtiTypes.ESFP][mbtiInfo.rgb];
-                        mbtiKorean = "연예인";
-                        //color = "#E0707E";
-                        break;
-                    case "ENTJ":
-                        color = mbtiArr[mbtiTypes.ENTJ][mbtiInfo.rgb];
-                        mbtiKorean = "통솔자";
-                        //color = "#3462A3";
-                        break;
-                    case "ENTP":
-                        color = mbtiArr[mbtiTypes.ENTP][mbtiInfo.rgb];
-                        mbtiKorean = "변론가";
-                        //color = "#DD5843";
-                        break;
-                    case "ENFJ":
-                        color = mbtiArr[mbtiTypes.ENFJ][mbtiInfo.rgb];
-                        mbtiKorean = "선도자";
-                        //color = "#52CEB0";
-                        break;
-                    case "ENFP":
-                        color = mbtiArr[mbtiTypes.ENFP][mbtiInfo.rgb];
-                        mbtiKorean = "활동가";
-                        //color = "#FFA348";
-                        break;
-                    case "ISTJ":
-                        color = mbtiArr[mbtiTypes.ISTJ][mbtiInfo.rgb];
-                        mbtiKorean = "현실주의자";
-                        //color = "#BBBBBB";
-                        break;
-                    case "ISTP":
-                        color = mbtiArr[mbtiTypes.ISTP][mbtiInfo.rgb];
-                        mbtiKorean = "장인";
-                        //color = "#2A718C";
-                        break;
-                    case "ISFJ":
-                        color = mbtiArr[mbtiTypes.ISFJ][mbtiInfo.rgb];
-                        mbtiKorean = "수호자";
-                        //color = "#FFCC71";
-                        break;
-                    case "ISFP":
-                        color = mbtiArr[mbtiTypes.ISFP][mbtiInfo.rgb];
-                        mbtiKorean = "모험가";
-                        //color = "#A6BF6F";
-                        break;
-                    case "INTJ":
-                        color = mbtiArr[mbtiTypes.INTJ][mbtiInfo.rgb];
-                        mbtiKorean = "전략가";
-                        //color = "#BAB0FF";
-                        break;
-                    case "INTP":
-                        color = mbtiArr[mbtiTypes.INTP][mbtiInfo.rgb];
-                        mbtiKorean = "논리술사";
-                        //color = "#7FC2F4";
-                        break;
-                    case "INFJ":
-                        color = mbtiArr[mbtiTypes.INFJ][mbtiInfo.rgb];
-                        mbtiKorean = "옹호자";
-                        //color = "#C0D8FF";
-                        break;
-                    case "INFP":
-                        color = mbtiArr[mbtiTypes.INFP][mbtiInfo.rgb];
-                        mbtiKorean = "중재자";
-                        //color = "#277A64";
-                        break;
-                    default:
-                        resultMessage = "알수없음"
-                }
-                percent = Math.round(prediction[i].probability.toFixed(2) * 100);
-
-                if (percent !== 0) {
-
-                    const classPrediction = `<span class=\"mbti\"><span class=\"mbti-type\">${mbtiKorean}</span><span class=\"graph\" style=\"background:rgba(${color},0.1)"><span style=\"width:${percent}%;\ background:rgb(${color});" > ${percent}%</span ></span >`;
-                    labelContainer.childNodes[i].innerHTML = classPrediction;
-                    /*
-                    const classPrediction = `<span class=\"mbti\"><span class=\"mbti-type\">${prediction[i].className}</span><span class=\"graph\" ${color}><span style=\"width:${percent}%;\ background:${color}" > ${percent}%</span ></span >`;
-                    labelContainer.childNodes[i].innerHTML = classPrediction;
-                    */
-                }
-
+            let percent = Math.round(prediction[0].probability.toFixed(2) * 100);
+            if (percent == 0) {
+                message = `당신은 절대 마기꾼일리 없습니다!<br>그 말은 곧! 똑같이 잘생기고 예쁘거나? 아니면 👀...<br>전자이길 바랄게요!`;
+            } else if (percent < 34) {
+                message = `당신은 마스크를 쓰나 벗으나 비슷할 것으로 보입니다!<br>마스크를 쓰고 벗는 것에 크게 신경쓰지 않는 당신!<br>존잘 혹은 존예겠죠?`;
+            } else if (percent < 67) {
+                message = `당신은 마기꾼일수도 아닐수도!<br>중간 정도의 범위에 해당하시네요.<br>당신은 스스로가 마기꾼이라 생각하시나요?`;
+            } else if (percent < 100) {
+                message = `당신은 마기꾼에 가깝다고 보입니다.<br>눈매가 너무 멋지고 예쁘셔서 이런 결과가 나온거겠죠?`
+            } else {
+                message = `와... 100% 대박!<br>이 인공지능이 참 멍청해요 그쵸? 좀 더 공부시킬게요...`
             }
-            document.getElementById("bg-box").style.backgroundColor = `rgba(${rgb},0.05)`;
+
+            resultMessage = `<span class="percent"><h3>당신이 마기꾼일 확률은</h3><h1>${percent}%</h1><br><h4>${message}</h4></span>`;
+            $('.result-message').html("");
+            labelContainer.childNodes[0].innerHTML = resultMessage;
+            /*
+            const classPrediction = `<span class=\"mbti\"><span class=\"mbti-type\">${prediction[i].className}</span><span class=\"graph\" ${color}><span style=\"width:${percent}%;\ background:${color}" > ${percent}%</span ></span >`;
+            labelContainer.childNodes[i].innerHTML = classPrediction;
+            */
+
+            /*
             var celebDiv = document.getElementById("celeb-div");
             celebDiv.innerHTML = `<a href=\"https://www.16personalities.com/ko/%EC%84%B1%EA%B2%A9%EC%9C%A0%ED%98%95-${prediction[0].className}\"<class=\"mbti-link\"><h4>${type}에 대해 더 알아보기</h4></a >    <h4 style="color:rgb(${rgb})">[${type} 관상의 연예인]<br>${celeb}</h4>`;
+                */
         }
     </script>
 </body>
