@@ -409,6 +409,20 @@ h6 {
   color: gray;
 }
 
+footer>a {
+  text-decoration: none;
+  color: #aaa;
+
+}
+
+footer>a>h3 {
+  font-size: 1.5rem;
+}
+
+footer>a>h3:hover {
+  color: red;
+}
+
 .ad-banner {
   width: 320px;
 
@@ -417,4 +431,9 @@ h6 {
 
 .percent>h1 {
   font-size: 4rem;
+}
+
+.excuse {
+  font-size: 2rem;
+  text-align: center;
 }
