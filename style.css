@@ -438,18 +438,3 @@ footer>a>h3:hover {
   font-size: 2rem;
   text-align: center;
 }
-
-.visit {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 0;
-  background-color: #f6f7fa;
-  flex-direction: column;
-}
-
-.visit>span {
-
-  font-family: 'Do Hyeon', sans-serif;
-  font-size: 2rem;
-}
