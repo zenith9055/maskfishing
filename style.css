@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Jua&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap');
 
 html {
   font-size: 14px;
@@ -436,4 +437,19 @@ footer>a>h3:hover {
 .excuse {
   font-size: 2rem;
   text-align: center;
+}
+
+.visit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0;
+  background-color: #f6f7fa;
+  flex-direction: column;
+}
+
+.visit>span {
+
+  font-family: 'Do Hyeon', sans-serif;
+  font-size: 2rem;
 }
